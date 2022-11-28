@@ -82,7 +82,7 @@
       video: {
         width: window.screen.width,
         height: 400,
-        facingMode: { exact: "environment" }
+        // facingMode: { exact: "environment" }
       }
     };
     await init(constraints);
@@ -142,6 +142,7 @@
   }
 
   function startRecording() {
+    console.log('start');
     recordedBlobs = [];
     const mimeType = codecSelector.options[codecSelector.selectedIndex].value;
     const options = {
@@ -177,6 +178,7 @@
   }
 
   recordBtn.addEventListener('click', () => {
+    console.log(isRecording);
     if (isRecording == false) {
       startRecording();
     } else {
@@ -189,7 +191,16 @@
   });
 
   function stopRecording() {
-    mediaRecorder.stop();
+    console.log(mediaRecorder);
+    try {
+      mediaRecorder.stop();
+      mediaRecorder.release();
+      mediaRecorder.reset()
+    } catch (error) {
+      console.log(error);
+      isRecording = false;
+    }
+
   }
   playBtn.addEventListener('click', () => {
     const mimeType = codecSelector.options[codecSelector.selectedIndex].value.split(';', 1)[0];
